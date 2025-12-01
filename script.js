@@ -104,31 +104,60 @@ document.addEventListener('DOMContentLoaded', function() {
     const formMessage = document.getElementById('formMessage');
     const submitBtn = document.getElementById('submitBtn');
     
-    // Wait for reCAPTCHA to be ready
+    // Wait for reCAPTCHA to be ready and get widget ID
     function waitForRecaptcha(callback) {
-        if (typeof grecaptcha !== 'undefined') {
-            if (grecaptcha.ready) {
-                grecaptcha.ready(callback);
-            } else {
-                // If ready() doesn't exist, check if widget is rendered
-                setTimeout(function() {
-                    try {
-                        const widgetId = grecaptcha.render ? 0 : null;
-                        if (widgetId !== null || grecaptcha.getResponse) {
-                            callback();
-                        } else {
-                            waitForRecaptcha(callback);
-                        }
-                    } catch (e) {
-                        waitForRecaptcha(callback);
-                    }
-                }, 100);
-            }
-        } else {
-            // If grecaptcha isn't loaded yet, wait a bit and try again
+        if (typeof grecaptcha === 'undefined') {
+            // reCAPTCHA script not loaded yet
             setTimeout(function() {
                 waitForRecaptcha(callback);
             }, 100);
+            return;
+        }
+        
+        // Use grecaptcha.ready if available (for v2)
+        if (grecaptcha.ready) {
+            grecaptcha.ready(function() {
+                // Wait a bit more for widget to fully render
+                setTimeout(function() {
+                    callback();
+                }, 200);
+            });
+        } else {
+            // Fallback: wait for callback or check DOM for widget
+            let attempts = 0;
+            const maxAttempts = 50;
+            
+            function checkWidget() {
+                attempts++;
+                
+                // Check if callback was called (widget is ready)
+                if (recaptchaWidgetReady) {
+                    callback();
+                    return;
+                }
+                
+                // Check if widget exists in DOM (iframe with recaptcha)
+                const recaptchaFrame = document.querySelector('iframe[src*="recaptcha"]');
+                if (recaptchaFrame) {
+                    // Widget exists, wait a bit more for it to be fully initialized
+                    setTimeout(function() {
+                        recaptchaWidgetReady = true;
+                        callback();
+                    }, 200);
+                    return;
+                }
+                
+                // Widget not ready yet
+                if (attempts < maxAttempts) {
+                    setTimeout(checkWidget, 100);
+                } else {
+                    console.error('reCAPTCHA widget failed to initialize');
+                    callback(); // Continue anyway
+                }
+            }
+            
+            // Start checking after a short delay to allow widget to render
+            setTimeout(checkWidget, 500);
         }
     }
     
@@ -139,29 +168,51 @@ document.addEventListener('DOMContentLoaded', function() {
             // Wait for reCAPTCHA to be ready before checking
             waitForRecaptcha(function() {
                 try {
-                    // Check if reCAPTCHA exists and get response
-                    if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse) {
+                    // Check if reCAPTCHA exists
+                    if (typeof grecaptcha === 'undefined' || typeof grecaptcha.getResponse !== 'function') {
                         formMessage.textContent = 'reCAPTCHA is still loading. Please wait a moment and try again.';
                         formMessage.className = 'form-message error';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Secure My Spot';
                         return;
                     }
                     
-                    // Get the widget ID (0 for first widget)
+                    // Get reCAPTCHA response
+                    // For automatic rendering, we need to wait for the widget to be ready
                     let recaptchaResponse = '';
+                    
+                    // Check if widget is ready first
+                    if (!recaptchaWidgetReady) {
+                        formMessage.textContent = 'reCAPTCHA is still loading. Please wait a moment and try again.';
+                        formMessage.className = 'form-message error';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Secure My Spot';
+                        return;
+                    }
+                    
                     try {
+                        // Try to get response - widget should be ready now
                         recaptchaResponse = grecaptcha.getResponse();
                     } catch (err) {
-                        // Try with explicit widget ID
+                        // If that fails, try with widget ID 0 explicitly
                         try {
                             recaptchaResponse = grecaptcha.getResponse(0);
                         } catch (err2) {
+                            // If both fail, the widget might not be rendered yet
                             console.error('reCAPTCHA getResponse error:', err2);
+                            formMessage.textContent = 'reCAPTCHA is still loading. Please wait a moment and try again.';
+                            formMessage.className = 'form-message error';
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Secure My Spot';
+                            return;
                         }
                     }
                     
-                    if (!recaptchaResponse) {
+                    if (!recaptchaResponse || recaptchaResponse.length === 0) {
                         formMessage.textContent = 'Please complete the reCAPTCHA verification.';
                         formMessage.className = 'form-message error';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Secure My Spot';
                         return;
                     }
                     
