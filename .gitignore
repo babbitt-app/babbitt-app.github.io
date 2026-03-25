@@ -27,3 +27,4 @@ npm-debug.log*
 .env.production 
 
 _about*
+.claude

@@ -38,49 +38,124 @@
     }, 2800);
 })();
 
-/* ── 2. Partner Hover — dim + vibrate/glow ── */
+/* ── 2. Partner — hover effect + blue sweep form ── */
 (function () {
-    var btnPartner = document.getElementById('btnPartner');
+    var btnPartner    = document.getElementById('btnPartner');
+    var blueSweep     = document.getElementById('blueSweep');
+    var sweepPartner  = document.getElementById('sweepPartner');
+    var partnerContent = sweepPartner ? sweepPartner.querySelector('.sweep-content') : null;
     if (!btnPartner) return;
+
+    // Hover: dim + vibrate/glow
     btnPartner.addEventListener('mouseenter', function () {
         document.body.classList.add('partner-hover');
     });
     btnPartner.addEventListener('mouseleave', function () {
         document.body.classList.remove('partner-hover');
     });
+
+    // Click: open blue sweep form
+    if (!blueSweep || !sweepPartner) return;
+
+    function openPartner() {
+        document.body.classList.remove('partner-hover');
+        blueSweep.classList.add('active');
+        sweepPartner.classList.add('active');
+    }
+
+    function closePartner() {
+        sweepPartner.classList.remove('active');
+        setTimeout(function () {
+            blueSweep.classList.remove('active');
+        }, 300);
+    }
+
+    btnPartner.addEventListener('click', function () {
+        openPartner();
+    });
+
+    if (partnerContent) {
+        partnerContent.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    }
+
+    sweepPartner.addEventListener('click', function () {
+        closePartner();
+    });
 })();
 
-/* ── 3. Member Click — fly to top-right + yellow sweep ── */
+/* ── 3. Yellow Sweep — open form overlay ── */
 (function () {
-    var btnMember   = document.getElementById('btnMember');
-    var yellowSweep = document.getElementById('yellowSweep');
-    var sweepMsg    = document.getElementById('sweepMessage');
-    if (!btnMember || !yellowSweep || !sweepMsg) return;
+    var btnMember    = document.getElementById('btnMember');
+    var btnNavCta    = document.getElementById('btnNavCta');
+    var btnWaitlist  = document.getElementById('btnWaitlistCta');
+    var yellowSweep  = document.getElementById('yellowSweep');
+    var sweepMsg     = document.getElementById('sweepMessage');
+    var sweepContent = sweepMsg ? sweepMsg.querySelector('.sweep-content') : null;
+    if (!yellowSweep || !sweepMsg) return;
 
-    btnMember.addEventListener('click', function () {
-        var rect = this.getBoundingClientRect();
-        var flyX = (window.innerWidth - rect.right) + rect.width * 0.5 - 20;
-        var flyY = -(rect.top) + 18;
+    function openSweep() {
+        yellowSweep.classList.add('active');
+        sweepMsg.classList.add('active');
+    }
 
-        this.classList.add('flying');
-        this.style.transform = 'translate(' + flyX + 'px, ' + flyY + 'px) scale(0.32) rotate(6deg)';
-        this.style.opacity   = '0.5';
-
+    function closeSweep() {
+        // 1. Fade out the form first
+        sweepMsg.classList.remove('active');
+        // 2. After form fades (250ms), retract the yellow sweep
         setTimeout(function () {
-            yellowSweep.classList.add('active');
-            sweepMsg.classList.add('active');
-        }, 400);
-
-        yellowSweep.addEventListener('click', function reset() {
             yellowSweep.classList.remove('active');
-            sweepMsg.classList.remove('active');
-            setTimeout(function () {
-                btnMember.style.transform = '';
-                btnMember.style.opacity   = '1';
-                btnMember.classList.remove('flying');
-            }, 250);
-            yellowSweep.removeEventListener('click', reset);
-        }, { once: true });
+            if (btnMember) {
+                setTimeout(function () {
+                    btnMember.style.transform = '';
+                    btnMember.style.opacity   = '1';
+                    btnMember.classList.remove('flying');
+                }, 250);
+            }
+        }, 300);
+    }
+
+    // Hero "I'm interested" — fly animation then open
+    if (btnMember) {
+        btnMember.addEventListener('click', function () {
+            var rect = this.getBoundingClientRect();
+            var flyX = (window.innerWidth - rect.right) + rect.width * 0.5 - 20;
+            var flyY = -(rect.top) + 18;
+
+            this.classList.add('flying');
+            this.style.transform = 'translate(' + flyX + 'px, ' + flyY + 'px) scale(0.32) rotate(6deg)';
+            this.style.opacity   = '0.5';
+
+            setTimeout(openSweep, 400);
+        });
+    }
+
+    // Nav "Get Early Access" — open immediately
+    if (btnNavCta) {
+        btnNavCta.addEventListener('click', function (e) {
+            e.preventDefault();
+            openSweep();
+        });
+    }
+
+    // Waitlist section "I'm interested" — open immediately
+    if (btnWaitlist) {
+        btnWaitlist.addEventListener('click', function () {
+            openSweep();
+        });
+    }
+
+    // Prevent clicks inside the form card from closing
+    if (sweepContent) {
+        sweepContent.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    }
+
+    // Close: click sweepMsg background (outside the form card)
+    sweepMsg.addEventListener('click', function () {
+        closeSweep();
     });
 })();
 
@@ -189,22 +264,44 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     var form = document.getElementById('waitlistForm');
     var formMessage = document.getElementById('formMessage');
     var submitBtn = document.getElementById('submitBtn');
+    var successEl = document.getElementById('waitlistSuccess');
     if (!form) return;
 
     form.addEventListener('submit', function () {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting...';
-        formMessage.textContent = 'Submitting your request...';
-        formMessage.className = 'form-message';
+        if (formMessage) {
+            formMessage.textContent = 'Submitting your request...';
+            formMessage.className = 'form-message';
+        }
         sessionStorage.setItem('formSubmitted', 'true');
     });
 
+    // Detect return from successful FormSubmit redirect
     var submitted = sessionStorage.getItem('formSubmitted');
-    if (submitted && window.location.hash === '#waitlist') {
-        formMessage.textContent = "Thank you for joining the waitlist! We'll be in touch soon.";
-        formMessage.className = 'form-message success';
-        form.reset();
+    if (submitted && successEl) {
+        var msg = submitted === 'partner'
+            ? "Thank you for your partnership enquiry. We'll be in touch soon."
+            : "Thank you for joining the waitlist. We'll be in touch soon.";
+        successEl.textContent = msg;
+        successEl.className = 'form-message success';
         sessionStorage.removeItem('formSubmitted');
-        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Partner form submission
+    var partnerForm = document.getElementById('partnerForm');
+    var partnerMsg = document.getElementById('partnerFormMessage');
+    var partnerBtn = document.getElementById('partnerSubmitBtn');
+    if (partnerForm) {
+        partnerForm.addEventListener('submit', function () {
+            partnerBtn.disabled = true;
+            partnerBtn.textContent = 'Sending...';
+            if (partnerMsg) {
+                partnerMsg.textContent = 'Submitting your enquiry...';
+                partnerMsg.className = 'form-message';
+            }
+            sessionStorage.setItem('formSubmitted', 'partner');
+        });
     }
 })();
