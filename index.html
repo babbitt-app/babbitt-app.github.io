@@ -3,226 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Welcome to Babbitt - Your amazing app landing page">
-    <title>Babbitt - Landing Page</title>
+    <meta name="description" content="Babbitt — The operating layer for the built environment. Where the whole job lives, for everyone on it.">
+    <title>Babbitt — The industry, in one place</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="styles.css">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Google reCAPTCHA v2 -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <!-- Navigation -------------------------------------------------------------------------------------------------------------------->
+
+    <!-- Dim overlay — partner hover -->
+    <div class="dim-overlay"></div>
+
+    <!-- Yellow sweep — member click -->
+    <div class="yellow-sweep" id="yellowSweep"></div>
+    <div class="sweep-message" id="sweepMessage">
+        <p>Every job. Your name on it.</p>
+    </div>
+
+    <!-- ═══ Nav ═══ -->
     <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">Babbitt</div>
-            <ul class="nav-menu">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+        <div class="container nav-inner">
+            <span class="nav-brand">Babbitt</span>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#lanes">Who it's for</a>
+                <a href="#waitlist" class="btn btn-sm">Get Early Access</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -------------------------------------------------------------------------------------------------------------------->
-    <section class="hero">
-        <div class="hero-background"></div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-branding">
-                    <div class="brand-name">Babbitt</div>
-                    <div class="brand-presents">Presents</div>
-                </div>
-                <h1 class="hero-title">The Future of Trades</h1>
-                <div class="countdown-timer" id="countdown">
-                    <div class="timer-unit">
-                        <div class="timer-value" id="days">30</div>
-                        <div class="timer-label">Days</div>
-                    </div>
-                    <div class="timer-separator">:</div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="hours">15</div>
-                        <div class="timer-label">Hours</div>
-                    </div>
-                    <div class="timer-separator">:</div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="minutes">06</div>
-                        <div class="timer-label">Minutes</div>
-                    </div>
-                    <div class="timer-separator">:</div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="seconds">54</div>
-                        <div class="timer-label">Seconds</div>
-                    </div>
-                </div>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">GET EARLY ACCESS</a>
-                    <a href="#features" class="btn btn-secondary">LEARN MORE</a>
-                </div>
-                <div class="scroll-indicator">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
+    <!-- ═══ Hero ═══ -->
+    <section class="hero" id="hero">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+
+        <div class="float-shape shape-cube" style="top:15%;left:8%;animation-delay:0s;animation-duration:14s"></div>
+        <div class="float-shape shape-ring" style="top:25%;left:85%;animation-delay:2s;animation-duration:11s"></div>
+        <div class="float-shape shape-diamond" style="top:65%;left:12%;animation-delay:1s;animation-duration:16s"></div>
+        <div class="float-shape shape-cube" style="top:70%;left:90%;animation-delay:3s;animation-duration:13s"></div>
+        <div class="float-shape shape-ring" style="top:10%;left:60%;animation-delay:4s;animation-duration:15s"></div>
+        <div class="float-shape shape-diamond" style="top:80%;left:50%;animation-delay:2s;animation-duration:12s"></div>
+
+        <div class="perspective-grid-wrap">
+            <div class="perspective-grid"></div>
+        </div>
+
+        <div class="glare-layer" id="glareLayer"></div>
+        <div class="glare-layer-warm" id="glareLayerWarm"></div>
+
+        <div class="container hero-inner">
+            <div class="hero-badge anim-hero">
+                <span class="badge-dot"></span>
+                Beta — April 2026
+            </div>
+
+            <div class="hero-headline anim-hero delay-1">
+                <span class="hero-line">Your work outlasts the invoice.</span>
+                <span class="hero-line">Your <span class="cycle" id="c-noun">trade</span>.</span>
+                <span class="hero-line">Your name <span class="cycle" id="c-verb">builds</span> every <span class="cycle" id="c-obj">home</span>.</span>
+                <span class="hero-line feature-word"><span class="cycle" id="c-single">Remembered</span></span>
+                <span class="hero-line closing"><span class="brand-name">Babbitt</span> — where the job lives.</span>
+            </div>
+
+            <div class="hero-cta anim-hero delay-3">
+                <button class="btn-member" id="btnMember">Become a member</button>
+                <button class="btn-partner" id="btnPartner">Become a Partner</button>
+                <span class="hero-subline">Every job. Your name on it.</span>
             </div>
         </div>
     </section>
 
-    <!-- Problem Statement Section -->
-    <section class="problem-statement">
-        <div class="container">
-            <p class="statement-text">Building and managing work in the modern trades industry shouldn't feel harder than the job itself</p>
-        </div>
-    </section>
-
-    <!-- Problems Section -------------------------------------------------------------------------------------------------------------------->
-    <section class="problems">
-        <div class="container">
-            <h2 class="section-title orange">Yet here we are...</h2>
-            <!-- <div class="section-subtitle">The Problem</div> -->
-            <div class="problems-grid">
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-file-alt"></i></span>
-                    <p>Paper-based work and outdated systems</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-user-friends"></i></span>
-                    <p>Difficulty finding reliable tradespeople</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-shield-alt"></i></span>
-                    <p>Scams and lack of accountability</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-puzzle-piece"></i></span>
-                    <p>Complex digital solutions that don't fit</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-chart-line"></i></span>
-                    <p>Lack of industry benchmarks</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-comments"></i></span>
-                    <p>Communication breakdowns</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-th"></i></span>
-                    <p>Fragmented tools and platforms</p>
-                </div>
-                <div class="problem-item">
-                    <span class="problem-icon"><i class="fas fa-network-wired"></i></span>
-                    <p>Limited networking opportunities</p>
-                </div>
+    <!-- ═══ Stats ═══ -->
+    <section class="stats">
+        <div class="container stats-grid">
+            <div class="stat-tile tilt-card anim-up">
+                <div class="stat-phrase">Trades. Property. Supply.</div>
+                <div class="stat-label">One platform.</div>
+            </div>
+            <div class="stat-tile tilt-card anim-up">
+                <div class="stat-phrase">Same job. Everyone on it.</div>
+                <div class="stat-label">Multi-party from day one.</div>
+            </div>
+            <div class="stat-tile tilt-card anim-up">
+                <div class="stat-phrase">No onboarding call.</div>
+                <div class="stat-label">No lock-in.</div>
+            </div>
+            <div class="stat-tile tilt-card anim-up">
+                <div class="stat-phrase">Your name on every job.</div>
+                <div class="stat-label">Your reputation grows.</div>
             </div>
         </div>
     </section>
 
-    <!-- Solution Section ------------------------------------------------------------------------------------------------------------------->
-    <section class="solution">
+    <!-- ═══ Features ═══ -->
+    <section class="features" id="features">
         <div class="container">
-            <h2 class="section-title orange">We're changing that</h2>
-            <p class="solution-text">Babbitt brings everything together — job management, networking, accountability, and education — in one smart platform made by people who actually get the trades.</p>
-            <p class="solution-cta">Learn more about what we're building and why it matters</p>
-        </div>
-    </section>
-
-    <!-- Features Section -------------------------------------------------------------------------------------------------------------------->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-subtitle">Our Platform</div>
-            <h2 class="section-title orange">Everything You Need</h2>
-            <p class="features-intro">Babbitt is a platform that offers everything from community tools to work flows.</p>
+            <div class="section-header">
+                <h2 class="section-title">The whole job, in one place</h2>
+                <p class="section-lead">The way Australian construction actually works.</p>
+            </div>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-users"></i></div>
-                    <h3>Community Platform</h3>
-                    <p>Connect with trades professionals and build your network</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-building"></i></div>
-                    <h3>Property Management</h3>
-                    <p>Streamline property and project management workflows</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-tasks"></i></div>
-                    <h3>Job Management</h3>
-                    <p>Handle teams tasks and timelines with clarity</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                    <h3>CodeChecker AI</h3>
-                    <p>State of the art AI-powered compliance verification</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
-                    <h3>Chat and Communicate With Your Team/Clients</h3>
-                    <p>In app chat and communication with your team and clients, conviently from the app</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-calculator"></i></div>
-                    <h3>Contract Accountability</h3>
-                    <p>Trust-based system with verified professionals and contractors</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-id-card"></i></div>
-                    <h3>Digital Identity</h3>
-                    <p>Your customisable professional profile, ready to share with your next client</p>
-                </div>
-                <div class="feature-card">
+                <div class="feature-card tilt-card anim-up">
                     <div class="feature-icon"><i class="fas fa-briefcase"></i></div>
-                    <h3>Job Acquisition</h3>
-                    <p>Find and secure new opportunities</p>
+                    <h3>Your job. Scope to close-out.</h3>
+                    <p>Every signature, every gate, every step — visible to everyone on it.</p>
                 </div>
-            </div>
-            <!-- <div class="features-cta">
-                <a href="#" class="btn btn-features">See the full list of features that the tools you need</a>
-            </div> -->
-        </div>
-    </section>
-
-    <!-- Built With You Section ------------------------------------------------------------------------------------------------------------------>
-    <section id="about" class="built-with-you">
-        <div class="container">
-            <h2 class="section-title orange">Built With You, Not Just For You</h2>
-            <p class="built-text">Every feature, every update, every improvement is driven by the people who use it. Your feedback drives the platform forward.</p>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon"><i class="fas fa-handshake"></i></div>
-                    <h3>Listen and grow with our users</h3>
+                <div class="feature-card tilt-card anim-up">
+                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                    <h3>Conversations that hold up.</h3>
+                    <p>Quick chats or formal threads. Your call. Both on the same job.</p>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon"><i class="fas fa-road"></i></div>
-                    <h3>Keep our tools fair, transparent and affordable</h3>
+                <div class="feature-card tilt-card anim-up">
+                    <div class="feature-icon"><i class="fas fa-truck"></i></div>
+                    <h3>Quote to delivery. One thread.</h3>
+                    <p>Every order visible. Every exception caught. Nothing lost between site and supplier.</p>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon"><i class="fas fa-star"></i></div>
-                    <h3>Protect your privacy and respect your time</h3>
+                <div class="feature-card tilt-card anim-up">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Your business at a glance.</h3>
+                    <p>Staff, fleet, compliance, finances. One view. Yours.</p>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon"><i class="fas fa-users-cog"></i></div>
-                    <h3>Uphold honesty, craftmanship and connections</h3>
+                <div class="feature-card tilt-card anim-up">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Your credibility, verified.</h3>
+                    <p>ABN, licences, trust markers. They follow you across every job.</p>
+                </div>
+                <div class="feature-card tilt-card anim-up">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Find work. Find people.</h3>
+                    <p>The right listings reach the right profiles. Post, sub-contract, or hire.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -------------------------------------------------------------------------------------------------------->
-    <section id="contact" class="contact">
+    <!-- ═══ ICP Lanes ═══ -->
+    <section class="lanes" id="lanes">
+        <div class="float-shape shape-ring" style="top:10%;left:5%;animation-delay:0s;animation-duration:18s"></div>
+        <div class="float-shape shape-cube" style="top:80%;left:92%;animation-delay:2s;animation-duration:14s"></div>
         <div class="container">
-            <h2 class="section-title orange">Secure Your Spot</h2>
-            <p class="contact-text">Join the waitlist to be the first to experience our beta. Of course, for free!</p>
-            <!-- 
-                FORMSUBMIT.CO SETUP:
-                1. Replace "phamhuykyanh90502@gmail.com" with your actual email address
-                2. FormSubmit.co will send form submissions directly to your email
-                3. No account or signup required - completely free!
-                4. Optional: Add _next parameter for redirect URL after submission
-            -->
+            <div class="section-header">
+                <h2 class="section-title">Every role in the chain</h2>
+                <p class="section-lead">One account. Multiple profiles. Each with its own workspace.</p>
+            </div>
+            <div class="lanes-grid">
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-yellow"><i class="fas fa-wrench"></i></div>
+                    <div>
+                        <h3 class="color-yellow">Trades</h3>
+                        <p>Your job, your crew, your name on it. Plumbers, electricians, builders.</p>
+                    </div>
+                </div>
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-green"><i class="fas fa-box"></i></div>
+                    <div>
+                        <h3 class="color-green">Supplier</h3>
+                        <p>The job doesn't start without you. Quote to delivery, one thread.</p>
+                    </div>
+                </div>
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-blue"><i class="fas fa-home"></i></div>
+                    <div>
+                        <h3 class="color-blue">Property Owner</h3>
+                        <p>Your property. Every trade who touched it, part of its story.</p>
+                    </div>
+                </div>
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-blue"><i class="fas fa-building"></i></div>
+                    <div>
+                        <h3 class="color-blue">Property Manager</h3>
+                        <p>Your portfolio. Every job across it, in one place.</p>
+                    </div>
+                </div>
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-blue"><i class="fas fa-users"></i></div>
+                    <div>
+                        <h3 class="color-blue">Strata</h3>
+                        <p>Common property. Every compliance step, accounted for.</p>
+                    </div>
+                </div>
+                <div class="lane-card tilt-card anim-up">
+                    <div class="lane-icon icon-blue"><i class="fas fa-hard-hat"></i></div>
+                    <div>
+                        <h3 class="color-blue">Tenant</h3>
+                        <p>Your home. See the job. Talk to the trade. That simple.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ How It Works ═══ -->
+    <section class="steps">
+        <div class="container steps-inner">
+            <div class="section-header">
+                <h2 class="section-title">Up and running in minutes</h2>
+            </div>
+            <div class="steps-list">
+                <div class="step-card tilt-card anim-up">
+                    <div class="step-num">01</div>
+                    <div>
+                        <h3>Create your account</h3>
+                        <p>No onboarding call. No sales deck. Start immediately.</p>
+                    </div>
+                </div>
+                <div class="step-card tilt-card anim-up">
+                    <div class="step-num">02</div>
+                    <div>
+                        <h3>Choose your lane</h3>
+                        <p>Trades, Supplier, Property, or Tenant. Verify your ABN. Build trust from job one.</p>
+                    </div>
+                </div>
+                <div class="step-card tilt-card anim-up">
+                    <div class="step-num">03</div>
+                    <div>
+                        <h3>Post your first job</h3>
+                        <p>The platform works from day one. Your reputation compounds from there.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Waitlist ═══ -->
+    <section class="waitlist" id="waitlist">
+        <div class="glow-orb glow-orb-center"></div>
+        <div class="float-shape shape-cube" style="top:20%;left:10%;animation-delay:0s;animation-duration:15s"></div>
+        <div class="float-shape shape-ring" style="top:60%;left:88%;animation-delay:2s;animation-duration:12s"></div>
+        <div class="perspective-grid-wrap">
+            <div class="perspective-grid"></div>
+        </div>
+
+        <div class="container waitlist-inner">
+            <div class="section-header">
+                <h2 class="section-title">Secure Your Spot</h2>
+                <p class="section-lead">Be first. Join the waitlist.</p>
+            </div>
+
             <form class="waitlist-form" id="waitlistForm" action="https://formsubmit.co/58459ab88c06eacf2b587fb2888464e5" method="POST">
-                <!-- FormSubmit.co configuration -->
-                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_captcha" value="true">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_format" value="plain">
                 <input type="hidden" name="_url" value="https://babbitt-app.github.io">
-                <input type="hidden" name="_next" value="https://babbitt-app.github.io/#contact">
+                <input type="hidden" name="_next" value="https://babbitt-app.github.io/#waitlist">
                 <input type="hidden" name="_subject" value="New Waitlist Signup - Babbitt">
                 <input type="hidden" name="_autoresponse" value="Thank you for joining the Babbitt waitlist! We'll be in touch soon.">
                 <div class="form-row">
@@ -241,80 +266,47 @@
                     <input type="checkbox" name="terms" required>
                     <span>I agree to the terms and conditions</span>
                 </label>
-                <!-- 
-                    RECAPTCHA SETUP:
-                    1. Go to https://www.google.com/recaptcha/admin/create
-                    2. Register a new site (reCAPTCHA v2 "I'm not a robot" Checkbox)
-                    3. Add your domain (e.g., yourusername.github.io or yourdomain.com)
-                    4. Copy your Site Key and replace "YOUR_RECAPTCHA_SITE_KEY" below
-                    5. Keep your Secret Key safe (you'll need it for server-side verification if you add a backend later)
-                -->
-                <div class="recaptcha-container">
-                    <div class="g-recaptcha" data-sitekey="6LdAbR0sAAAAAHH2UU1UFWESwzjmN6w3Pe2dclvm" data-callback="onRecaptchaCallback"></div>
-                </div>
                 <div id="formMessage" class="form-message"></div>
-                <button type="submit" class="btn btn-submit" id="submitBtn">Secure My Spot</button>
+                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Secure My Spot</button>
             </form>
-            <div class="waitlist-benefits">
-                <h3 class="benefits-title">Why join the waitlist?</h3>
-                <div class="benefits-grid-small">
-                    <div class="benefit-item">
-                        <span class="benefit-icon"><i class="fas fa-bell"></i></span>
-                        <p>Get the latest news on our mobile app launch date</p>
+
+            <div class="waitlist-perks">
+                <h3>Why join the waitlist?</h3>
+                <div class="perks-grid">
+                    <div class="perk-item">
+                        <span class="perk-icon"><i class="fas fa-bell"></i></span>
+                        <p>First to know when the platform opens</p>
                     </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon"><i class="fas fa-tag"></i></span>
-                        <p>12 months discounts users who pre-registered before launch</p>
+                    <div class="perk-item">
+                        <span class="perk-icon"><i class="fas fa-tag"></i></span>
+                        <p>Priority access at launch</p>
                     </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon"><i class="fas fa-gift"></i></span>
-                        <p>Subscriptions give-away for trades businesses on launch</p>
+                    <div class="perk-item">
+                        <span class="perk-icon"><i class="fas fa-gift"></i></span>
+                        <p>Launch rewards for early members</p>
                     </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon"><i class="fas fa-handshake"></i></span>
-                        <p>Enterprise partnership offers available</p>
+                    <div class="perk-item">
+                        <span class="perk-icon"><i class="fas fa-handshake"></i></span>
+                        <p>Enterprise partnership offers</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ═══ Footer ═══ -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-brand-name">Babbitt</div>
-                    <p class="footer-description">The all-in-one platform for the modern trades industry.</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h3>Product</h3>
-                        <ul>
-                            <li><a href="#features">Features</a></li>
-                            <li><a href="#">Pricing</a></li>
-                            <li><a href="#">Roadmap</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>Company</h3>
-                        <ul>
-                            <li><a href="#about">About Us</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#contact">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <span class="footer-brand">Babbit<span>t</span></span>
+                <span class="footer-by">by Babbitt Pty Ltd</span>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Babbitt. All rights reserved.</p>
-                <div class="social-icons">
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                </div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#lanes">Who it's for</a>
+                <a href="#waitlist">Waitlist</a>
             </div>
+            <p class="footer-copy">&copy; 2026 Babbitt. All rights reserved.</p>
         </div>
     </footer>
 
