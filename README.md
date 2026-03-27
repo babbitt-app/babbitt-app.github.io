@@ -1,4 +1,1 @@
 # Babbitt Landing Page
-
-
-
