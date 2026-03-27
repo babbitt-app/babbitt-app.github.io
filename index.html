@@ -702,28 +702,4 @@
       btnCta.classList.add('flying');
       btnCta.style.transform = `translate(${flyX}px, ${flyY}px) scale(0.32) rotate(6deg)`;
       btnCta.style.opacity   = '0.5';
-      document.body.classList.remove('cta-hover');
-
-      setTimeout(() => {
-        yellowSweep.classList.add('active');
-        sweepMsg.classList.add('active');
-      }, 400);
-    }
-
-    function dismissSweep() {
-      yellowSweep.classList.remove('active');
-      sweepMsg.classList.remove('active');
-      setTimeout(() => {
-        btnCta.style.transform = '';
-        btnCta.style.opacity   = '1';
-        btnCta.classList.remove('flying');
-      }, 250);
-    }
-
-    btnCta.addEventListener('click', () => triggerSweep(btnCta));
-    document.getElementById('navCta').addEventListener('click', () => triggerSweep(btnCta));
-    sweepDismiss.addEventListener('click', dismissSweep);
-  </script>
-
-</body>
-</html>
+   
