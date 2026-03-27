@@ -1,393 +1,723 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Babbitt — The operating layer for the built environment. Where the whole job lives, for everyone on it.">
-    <title>Babbitt — The industry, in one place</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babbitt — The industry, in one place.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow:         #F6B500;
+      --orange:         #FF5C00;
+      --bg-base:        #131210;
+      --bg-surface:     #1C1A17;
+      --border:         #2E2B26;
+      --border-subtle:  #1E1C19;
+      --text-primary:   #F0EDE8;
+      --text-secondary: #9B9793;
+      --text-tertiary:  #5C5955;
+      --text-disabled:  #3A3835;
+      --text-inverse:   #131210;
+      --font-head:      'Space Grotesk', system-ui, sans-serif;
+      --font-body:      'Outfit', system-ui, sans-serif;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Noise grain */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.032;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ══════════════════════════════════
+       ATMOSPHERIC GRADIENT ORBS
+    ══════════════════════════════════ */
+    .orb-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      will-change: transform, opacity;
+    }
+
+    /* Orb 1 — large primary, upper right, visible yellow */
+    .orb-1 {
+      width: 900px;
+      height: 700px;
+      top: -180px;
+      right: -150px;
+      background: radial-gradient(ellipse at center,
+        rgba(246,181,0,0.28) 0%,
+        rgba(246,181,0,0.12) 38%,
+        rgba(246,181,0,0.03) 62%,
+        transparent 75%
+      );
+      filter: blur(55px);
+      animation: orbDrift1 22s ease-in-out infinite;
+    }
+
+    /* Orb 2 — mid-screen roamer, warm orange-amber */
+    .orb-2 {
+      width: 650px;
+      height: 500px;
+      top: 35%;
+      left: 15%;
+      background: radial-gradient(ellipse at center,
+        rgba(246,181,0,0.18) 0%,
+        rgba(255,130,0,0.08) 45%,
+        transparent 68%
+      );
+      filter: blur(65px);
+      animation: orbDrift2 17s ease-in-out infinite;
+    }
+
+    /* Orb 3 — small, fast, bottom-left accent */
+    .orb-3 {
+      width: 420px;
+      height: 340px;
+      bottom: 10%;
+      left: -60px;
+      background: radial-gradient(ellipse at center,
+        rgba(246,181,0,0.22) 0%,
+        rgba(246,181,0,0.07) 50%,
+        transparent 70%
+      );
+      filter: blur(45px);
+      animation: orbDrift3 13s ease-in-out infinite;
+    }
+
+    @keyframes orbDrift1 {
+      0%   { transform: translate(0,     0)      scale(1);    opacity: 1;    }
+      20%  { transform: translate(-220px, 140px) scale(1.12); opacity: 0.75; }
+      45%  { transform: translate(-80px,  280px) scale(0.90); opacity: 0.95; }
+      70%  { transform: translate(160px,  100px) scale(1.08); opacity: 0.65; }
+      100% { transform: translate(0,     0)      scale(1);    opacity: 1;    }
+    }
+
+    @keyframes orbDrift2 {
+      0%   { transform: translate(0,    0)      scale(1);    opacity: 0.85; }
+      25%  { transform: translate(280px, -140px) scale(1.18); opacity: 1;    }
+      55%  { transform: translate(180px,  180px) scale(0.85); opacity: 0.60; }
+      80%  { transform: translate(-120px, 60px)  scale(1.05); opacity: 0.90; }
+      100% { transform: translate(0,    0)      scale(1);    opacity: 0.85; }
+    }
+
+    @keyframes orbDrift3 {
+      0%   { transform: translate(0,    0)      scale(1);    opacity: 0.90; }
+      30%  { transform: translate(200px, -180px) scale(1.20); opacity: 0.70; }
+      65%  { transform: translate(350px,  80px)  scale(0.80); opacity: 1;    }
+      100% { transform: translate(0,    0)      scale(1);    opacity: 0.90; }
+    }
+
+    /* ══════════════════════════════════
+       DIM OVERLAY — CTA hover
+    ══════════════════════════════════ */
+    .dim-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 12, 10, 0);
+      pointer-events: none;
+      z-index: 10;
+      transition: background 0.45s ease;
+    }
+
+    body.cta-hover .dim-overlay {
+      background: rgba(13, 12, 10, 0.62);
+    }
+
+    /* ══════════════════════════════════
+       YELLOW SWEEP — CTA click
+    ══════════════════════════════════ */
+    .yellow-sweep {
+      position: fixed;
+      inset: 0;
+      background: var(--yellow);
+      z-index: 900;
+      clip-path: circle(0% at calc(100% + 20px) -20px);
+      pointer-events: none;
+      transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .yellow-sweep.active {
+      clip-path: circle(175% at calc(100% + 20px) -20px);
+      pointer-events: all;
+    }
+
+    .sweep-message {
+      position: fixed;
+      inset: 0;
+      z-index: 901;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      transition: opacity 0.4s ease 0.72s;
+      pointer-events: none;
+    }
+
+    .sweep-message.active { opacity: 1; pointer-events: all; }
+
+    .sweep-message p {
+      font-family: var(--font-head);
+      font-size: clamp(22px, 3vw, 42px);
+      font-weight: 700;
+      color: var(--text-inverse);
+      letter-spacing: -0.028em;
+    }
+
+    .sweep-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 420px;
+      padding: 0 24px;
+    }
+
+    .sweep-input {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text-inverse);
+      background: rgba(19, 18, 16, 0.14);
+      border: 1.5px solid rgba(19, 18, 16, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      outline: none;
+      letter-spacing: -0.01em;
+    }
+
+    .sweep-input::placeholder { color: rgba(19,18,16,0.45); }
+    .sweep-input:focus { border-color: rgba(19,18,16,0.6); }
+
+    .sweep-submit {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--yellow);
+      background: var(--text-inverse);
+      border: none;
+      border-radius: 8px;
+      padding: 14px 18px;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s ease;
+    }
+
+    .sweep-submit:hover { opacity: 0.88; }
+
+    .sweep-dismiss {
+      font-size: 12px;
+      color: rgba(19,18,16,0.5);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+    }
+
+    .sweep-dismiss:hover { color: rgba(19,18,16,0.75); }
+
+    /* Terms note */
+    .sweep-terms {
+      font-size: 10px;
+      color: rgba(19,18,16,0.4);
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+
+    /* ── Form fields ── */
+    .form-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+    .form-row .sweep-input { flex: 1; }
+
+    .sweep-form select,
+    .sweep-form textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text-inverse);
+      background: rgba(19, 18, 16, 0.14);
+      border: 1.5px solid rgba(19, 18, 16, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      outline: none;
+      letter-spacing: -0.01em;
+      appearance: none;
+    }
+    .sweep-form select option { color: #131210; background: #ffffff; }
+    .sweep-form textarea { resize: none; }
+    .sweep-form select:focus,
+    .sweep-form textarea:focus { border-color: rgba(19,18,16,0.6); }
+    .sweep-form select::placeholder,
+    .sweep-form textarea::placeholder { color: rgba(19,18,16,0.45); }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: rgba(19,18,16,0.55);
+      cursor: pointer;
+      width: 100%;
+      line-height: 1.4;
+    }
+    .checkbox-label input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    /* ══════════════════════════════════
+       NAV
+    ══════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 60px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    /* Yellow "it" in Babbitt */
+    .nav-logo .logo-accent { color: var(--yellow); }
+
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-inverse);
+      background: var(--yellow);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 22px;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ══════════════════════════════════
+       HERO — full viewport, bottom-anchored
+    ══════════════════════════════════ */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 64px 108px;
+    }
+
+    /* BETA BADGE */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid rgba(246,181,0,0.24);
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--yellow);
+      margin-bottom: 44px;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+      animation: badgePulse 2.2s ease infinite;
+    }
+
+    @keyframes badgePulse {
+      0%,  100% { opacity: 1; }
+      50%        { opacity: 0.3; }
+    }
+
+    /* HEADLINE BLOCK */
+    .hero-headline {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 1060px;
+    }
+
+    /* ── ANCHOR LINE — the big one ── */
+    .hero-anchor {
+      font-family: var(--font-head);
+      font-size: clamp(38px, 6.4vw, 88px);
+      font-weight: 700;
+      letter-spacing: -0.038em;
+      line-height: 1.06;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.45em;
+    }
+
+    /* ── STANZA — cycling lines ── */
+    .hero-stanza {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-line {
+      font-family: var(--font-head);
+      font-size: clamp(20px, 3.4vw, 46px);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.22;
+      color: var(--text-secondary);
+      display: block;
+    }
+
+    .hero-line + .hero-line { margin-top: 0.04em; }
+
+    /* ── FEATURE WORD — big cycling closer ── */
+    .hero-feature {
+      font-family: var(--font-head);
+      font-size: clamp(52px, 9.5vw, 128px);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      line-height: 0.95;
+      color: var(--yellow);
+      display: block;
+      margin-top: 0.3em;
+    }
+
+    /* Cycling word animation */
+    .cycle { color: var(--yellow); display: inline-block; }
+
+    @keyframes wordOut {
+      0%   { opacity: 1; transform: translateY(0);    filter: blur(0);  }
+      100% { opacity: 0; transform: translateY(-9px); filter: blur(3px); }
+    }
+
+    @keyframes wordIn {
+      0%   { opacity: 0; transform: translateY(9px);  filter: blur(3px); }
+      100% { opacity: 1; transform: translateY(0);    filter: blur(0);  }
+    }
+
+    .cycle.anim-out { animation: wordOut 0.3s ease forwards; }
+    .cycle.anim-in  { animation: wordIn  0.3s ease forwards; }
+
+    /* ══════════════════════════════════
+       CTA BLOCK
+    ══════════════════════════════════ */
+    .hero-cta {
+      margin-top: 56px;
+      position: relative;
+      z-index: 20;
+      width: fit-content;
+    }
+
+    .btn-cta {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-inverse);
+      background: var(--yellow);
+      border: none;
+      border-radius: 8px;
+      padding: 19px 56px;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      position: relative;
+      z-index: 20;
+      transform-origin: center bottom;
+      transition:
+        transform   0.30s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow  0.30s ease;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-10px) perspective(500px) rotateX(8deg);
+      box-shadow:
+        0 20px 52px rgba(246,181,0,0.42),
+        0  8px 20px rgba(246,181,0,0.26),
+        0 36px 80px rgba(0,0,0,0.55);
+    }
+
+    .btn-cta:active {
+      transform: translateY(-2px) scale(0.97);
+    }
+
+    .btn-cta.flying {
+      transition:
+        transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity   0.52s ease !important;
+    }
+
+    /* ══════════════════════════════════
+       BOTTOM STRIP
+    ══════════════════════════════════ */
+    .bottom-strip {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 60px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .catchphrase {
+      font-family: var(--font-head);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .legal {
+      font-family: var(--font-body);
+      font-size: 10px;
+      color: var(--text-disabled);
+      letter-spacing: 0.03em;
+    }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav             { padding: 22px 28px; }
+      .hero           { padding: 0 28px 110px; }
+      .hero-anchor    { white-space: normal; }
+      .bottom-strip   { padding: 14px 28px; }
+      .legal          { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero  { padding: 0 22px 110px; }
+      nav    { padding: 20px 22px; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Dim overlay — partner hover -->
-    <div class="dim-overlay"></div>
+  <!-- Dim overlay — CTA hover -->
+  <div class="dim-overlay"></div>
 
-    <!-- Yellow sweep — form overlay -->
-    <div class="yellow-sweep" id="yellowSweep"></div>
-    <div class="sweep-message" id="sweepMessage">
-        <div class="sweep-content">
-            <p class="sweep-title">Every job. Your name on it.</p>
-            <form class="sweep-form" id="waitlistForm" action="https://formsubmit.co/58459ab88c06eacf2b587fb2888464e5" method="POST">
-                <input type="hidden" name="_captcha" value="true">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_format" value="plain">
-                <input type="hidden" name="_url" value="https://babbitt-app.github.io">
-                <input type="hidden" name="_next" value="https://babbitt-app.github.io/#user_waitlist">
-                <input type="hidden" name="_subject" value="New Waitlist Signup - Babbitt">
-                <input type="hidden" name="_autoresponse" value="Thank you for your interest in Babbitt! We'll be in touch soon.">
-                <div class="form-row">
-                    <input type="text" name="firstName" placeholder="First Name" required>
-                    <input type="text" name="lastName" placeholder="Last Name" required>
-                </div>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="company" placeholder="Your Company Name (if any)">
-                <select name="userType" aria-placeholder="Your Profession" required>
-                    <option value ="">Your Profession</option>
-                    <option value="trades">Trades & Specialists</option>
-                    <option value="property_manager">Property Manager</option>
-                    <option value="property_owner">Property Owner</option>
-                    <option value="strata">Strata</option>
-                    <option value="supplier">Suppliers & Enterprise Contractors</option>
-                    <option value="tenant">Tenant</option>
-                    <option value="other">Other</option>
-                </select>
-                <textarea name="Your thoughts" rows="3" maxlength="300" placeholder="Anything on your mind about Babbitt? Let us know"></textarea>
-                <label class="checkbox-label">
-                    <input type="checkbox" name="terms" required>
-                    <span>I agree to the terms and conditions</span>
-                </label>
-                <div id="formMessage" class="form-message"></div>
-                <button type="submit" class="btn btn-submit-sweep" id="submitBtn">Secure My Spot</button>
-            </form>
-            <p class="sweep-hint">Click outside to close</p>
-        </div>
+  <!-- Yellow sweep — CTA click -->
+  <div class="yellow-sweep" id="yellowSweep"></div>
+  <div class="sweep-message" id="sweepMessage">
+    <p>Every job. Your name on it.</p>
+    <form class="sweep-form" id="waitlistForm" action="https://formsubmit.co/hello@babbitt.app" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_subject" value="New Waitlist Signup — Babbitt">
+      <input type="hidden" name="_autoresponse" value="Thank you for your interest in Babbitt! We'll be in touch soon.">
+      <div class="form-row">
+        <input class="sweep-input" type="text" name="firstName" placeholder="First Name" required>
+        <input class="sweep-input" type="text" name="lastName" placeholder="Last Name" required>
+      </div>
+      <input class="sweep-input" type="email" name="email" placeholder="Email" required>
+      <input class="sweep-input" type="text" name="company" placeholder="Your Company Name (if any)">
+      <select name="userType" required>
+        <option value="">Your Profession</option>
+        <option value="trades">Trades &amp; Specialists</option>
+        <option value="property_manager">Property Manager</option>
+        <option value="property_owner">Property Owner</option>
+        <option value="strata">Strata</option>
+        <option value="supplier">Suppliers &amp; Enterprise Contractors</option>
+        <option value="tenant">Tenant</option>
+        <option value="other">Other</option>
+      </select>
+      <label class="checkbox-label">
+        <input type="checkbox" name="terms" required>
+        <span>I agree to the terms and conditions</span>
+      </label>
+      <button type="submit" class="sweep-submit">Secure My Spot</button>
+      <span class="sweep-terms">No spam. Early access only — April 2026 beta.</span>
+    </form>
+    <button class="sweep-dismiss" id="sweepDismiss">← Back</button>
+  </div>
+
+  <!-- Atmospheric gradient orbs -->
+  <div class="orb-container">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Babb<span class="logo-accent">it</span>t</a>
+    <button class="nav-cta" id="navCta">Get early access</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Beta — April 2026
     </div>
 
-    <!-- Blue sweep — partner form overlay -->
-    <div class="blue-sweep" id="blueSweep"></div>
-    <div class="sweep-message sweep-partner" id="sweepPartner">
-        <div class="sweep-content">
-            <p class="sweep-title">Partner with Us.</p>
-            <form class="sweep-form" id="partnerForm" action="https://formsubmit.co/58459ab88c06eacf2b587fb2888464e5" method="POST">
-                <input type="hidden" name="_captcha" value="true">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_format" value="plain">
-                <input type="hidden" name="_url" value="https://babbitt-app.github.io">
-                <input type="hidden" name="_next" value="https://babbitt-app.github.io/#partner_waitlist">
-                <input type="hidden" name="_subject" value="New Partner Enquiry - Babbitt">
-                <input type="hidden" name="_autoresponse" value="Thank you for your interest in partnering with Babbitt! We'll be in touch soon.">
-                <div class="form-row">
-                    <input type="text" name="firstName" placeholder="First Name" required>
-                    <input type="text" name="lastName" placeholder="Last Name" required>
-                </div>
-                <input type="email" name="email" placeholder="Business Email" required>
-                <input type="text" name="company" placeholder="Company Name" required>
-                <input type="text" name="role" placeholder="Your Role">
-                <select name="partnerType" required>
-                    <option value="">Partnership Type</option>
-                    <option value="supplier">Supplier / Distributor</option>
-                    <option value="enterprise">Enterprise Contractor</option>
-                    <option value="technology">Technology / Integration</option>
-                    <option value="association">Industry Association</option>
-                    <option value="investor">Investor</option>
-                    <option value="other">Other</option>
-                </select>
-                <textarea name="message" rows="3" maxlength="500" placeholder="Tell us about the partnership you have in mind"></textarea>
-                <label class="checkbox-label">
-                    <input type="checkbox" name="terms" required>
-                    <span>I agree to the terms and conditions</span>
-                </label>
-                <div id="partnerFormMessage" class="form-message"></div>
-                <button type="submit" class="btn btn-submit-sweep btn-submit-partner" id="partnerSubmitBtn">Send Enquiry</button>
-            </form>
-            <p class="sweep-hint sweep-hint-partner">Click outside to close</p>
-        </div>
+    <div class="hero-headline">
+
+      <span class="hero-anchor">Your work outlasts the invoice.</span>
+
+      <div class="hero-stanza">
+        <span class="hero-line">Your <span class="cycle" id="c-noun">craft</span>.</span>
+        <span class="hero-line">Your name <span class="cycle" id="c-verb">builds</span> every <span class="cycle" id="c-obj">job</span>.</span>
+      </div>
+
+      <span class="hero-feature"><span class="cycle" id="c-single">Remembered</span></span>
+
     </div>
 
-    <!-- ═══ Nav ═══ -->
-    <nav class="navbar">
-        <div class="container nav-inner">
-            <span class="nav-brand"><span>B</span>abbitt</span>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#lanes">Who it's for</a>
-                <button class="btn btn-sm" id="btnNavCta">Get Early Access</button>
-            </div>
-        </div>
-    </nav>
+    <div class="hero-cta">
+      <button class="btn-cta" id="btnCta">Get early access</button>
+    </div>
 
-    <!-- ═══ Hero ═══ -->
-    <section class="hero" id="hero">
-        <div class="glow-orb glow-orb-1"></div>
-        <div class="glow-orb glow-orb-2"></div>
+  </section>
 
-        <div class="float-shape shape-hammer" style="top:12%;left:7%;animation-delay:0s;animation-duration:14s"></div>
-        <div class="float-shape shape-ruler" style="top:22%;left:86%;animation-delay:2s;animation-duration:11s"></div>
-        <div class="float-shape shape-hardhat" style="top:58%;left:10%;animation-delay:1s;animation-duration:16s"></div>
-        <div class="float-shape shape-building" style="top:72%;left:91%;animation-delay:3s;animation-duration:13s"></div>
-        <div class="float-shape shape-wrench" style="top:8%;left:55%;animation-delay:4s;animation-duration:15s"></div>
-        <div class="float-shape shape-shovel" style="top:82%;left:48%;animation-delay:2s;animation-duration:12s"></div>
-        <div class="float-shape shape-paintbrush" style="top:35%;left:92%;animation-delay:1.5s;animation-duration:17s"></div>
-        <div class="float-shape shape-plug" style="top:45%;left:4%;animation-delay:3.5s;animation-duration:13s"></div>
-        <div class="float-shape shape-pipette" style="top:18%;left:38%;animation-delay:0.5s;animation-duration:16s"></div>
-        <div class="float-shape shape-fence" style="top:75%;left:25%;animation-delay:2.5s;animation-duration:14s"></div>
+  <!-- BOTTOM STRIP -->
+  <div class="bottom-strip">
+    <span class="catchphrase">Every job. Your name on it.</span>
+    <span class="legal">Babbitt Pty Ltd &nbsp;·&nbsp; ABN XX XXX XXX XXX &nbsp;·&nbsp; © 2026</span>
+  </div>
 
-        <div class="perspective-grid-wrap">
-            <div class="perspective-grid"></div>
-        </div>
+  <script>
+    /* ══════════════════════════════════
+       WORD CYCLING
+    ══════════════════════════════════ */
+    const nouns   = ['craft','trade','skill','hands','product','design','name'];
+    const verbs   = ['builds','connects','finishes','frames','delivers','renovates','installs'];
+    const objects = ['job','site','home','property','build','project','delivery'];
+    const singles = ['Remembered','Respected','Rewarded','Redefines','Remains'];
 
-        <div class="glare-layer" id="glareLayer"></div>
-        <div class="glare-layer-warm" id="glareLayerWarm"></div>
+    const idx     = { n:0, v:0, o:0, s:0 };
+    const els     = {
+      n: document.getElementById('c-noun'),
+      v: document.getElementById('c-verb'),
+      o: document.getElementById('c-obj'),
+      s: document.getElementById('c-single')
+    };
+    const wordMap = { n: nouns, v: verbs, o: objects, s: singles };
 
-        <div class="container hero-inner">
-            <div class="hero-badge anim-hero">
-                <span class="badge-dot"></span>
-                Beta — April 2026
-            </div>
+    function swapWord(key) {
+      const el = els[key], arr = wordMap[key];
+      el.classList.remove('anim-in');
+      el.classList.add('anim-out');
+      setTimeout(() => {
+        idx[key] = (idx[key] + 1) % arr.length;
+        el.textContent = arr[idx[key]];
+        el.classList.remove('anim-out');
+        el.classList.add('anim-in');
+        setTimeout(() => el.classList.remove('anim-in'), 300);
+      }, 300);
+    }
 
-            <div class="hero-headline anim-hero delay-1">
-                <span class="hero-line">Your work outlasts the invoice.</span>
-                <span class="hero-line">Your <span class="cycle" id="c-noun">trade</span>.</span>
-                <span class="hero-line">Your name <span class="cycle" id="c-verb">builds</span> every <span class="cycle" id="c-obj">home</span>.</span>
-                <span class="hero-line feature-word"><span class="cycle" id="c-single">Remembered</span></span>
-                <span class="hero-line closing"><span class="brand-name"><span>B</span>abbitt</span> — where the job lives.</span>
-            </div>
+    // 3.5s interval per crit
+    setInterval(() => {
+      swapWord('n'); swapWord('v'); swapWord('o'); swapWord('s');
+    }, 3500);
 
-            <div class="hero-cta anim-hero delay-3">
-                <button class="btn-member" id="btnMember">I'm interested</button>
-                <button class="btn-partner" id="btnPartner">Become a Partner</button>
-                <span class="hero-subline">Every job. Your name on it.</span>
-            </div>
-        </div>
-    </section>
 
-    <!-- ═══ Stats ═══ -->
-    <section class="stats">
-        <div class="container stats-grid">
-            <div class="stat-tile tilt-card anim-up">
-                <div class="stat-phrase">Trades. Property. Supply.</div>
-                <div class="stat-label">One platform.</div>
-            </div>
-            <div class="stat-tile tilt-card anim-up">
-                <div class="stat-phrase">Same job. Everyone on it.</div>
-                <div class="stat-label">Multi-party from day one.</div>
-            </div>
-            <div class="stat-tile tilt-card anim-up">
-                <div class="stat-phrase">No onboarding call.</div>
-                <div class="stat-label">No lock-in.</div>
-            </div>
-            <div class="stat-tile tilt-card anim-up">
-                <div class="stat-phrase">Your name on every job.</div>
-                <div class="stat-label">Your reputation grows.</div>
-            </div>
-        </div>
-    </section>
+    /* ══════════════════════════════════
+       CTA HOVER — dim screen
+    ══════════════════════════════════ */
+    const btnCta = document.getElementById('btnCta');
+    btnCta.addEventListener('mouseenter', () => document.body.classList.add('cta-hover'));
+    btnCta.addEventListener('mouseleave', () => document.body.classList.remove('cta-hover'));
 
-    <!-- ═══ Features ═══ -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">The whole job, in one place</h2>
-                <p class="section-lead">The way Australian construction actually works.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-briefcase"></i></div>
-                    <h3>Your job. Scope to close-out.</h3>
-                    <p>Every signature, every gate, every step — visible to everyone on it.</p>
-                </div>
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
-                    <h3>Conversations that hold up.</h3>
-                    <p>Quick chats or formal threads. Your call. Both on the same job.</p>
-                </div>
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-truck"></i></div>
-                    <h3>Quote to delivery. One thread.</h3>
-                    <p>Every order visible. Every exception caught. Nothing lost between site and supplier.</p>
-                </div>
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Your business at a glance.</h3>
-                    <p>Staff, fleet, compliance, finances. One view. Yours.</p>
-                </div>
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Your credibility, verified.</h3>
-                    <p>ABN, licences, trust markers. They follow you across every job.</p>
-                </div>
-                <div class="feature-card tilt-card anim-up">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Find work. Find people.</h3>
-                    <p>The right listings reach the right profiles. Post, sub-contract, or hire.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ═══ ICP Lanes ═══ -->
-    <section class="lanes" id="lanes">
-        <div class="float-shape shape-hammer" style="top:10%;left:5%;animation-delay:0s;animation-duration:18s"></div>
-        <div class="float-shape shape-building" style="top:80%;left:92%;animation-delay:2s;animation-duration:14s"></div>
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Every role in the chain</h2>
-                <p class="section-lead">One account. Multiple profiles. Each with its own workspace.</p>
-            </div>
-            <div class="lanes-grid">
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-yellow"><i class="fas fa-wrench"></i></div>
-                    <div>
-                        <h3 class="color-yellow">Trades</h3>
-                        <p>Your job, your crew, your name on it. Plumbers, electricians, builders.</p>
-                    </div>
-                </div>
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-green"><i class="fas fa-box"></i></div>
-                    <div>
-                        <h3 class="color-green">Supplier</h3>
-                        <p>The job doesn't start without you. Quote to delivery, one thread.</p>
-                    </div>
-                </div>
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-blue"><i class="fas fa-home"></i></div>
-                    <div>
-                        <h3 class="color-blue">Property Owner</h3>
-                        <p>Your property. Every trade who touched it, part of its story.</p>
-                    </div>
-                </div>
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-blue"><i class="fas fa-building"></i></div>
-                    <div>
-                        <h3 class="color-blue">Property Manager</h3>
-                        <p>Your portfolio. Every job across it, in one place.</p>
-                    </div>
-                </div>
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-blue"><i class="fas fa-users"></i></div>
-                    <div>
-                        <h3 class="color-blue">Strata</h3>
-                        <p>Common property. Every compliance step, accounted for.</p>
-                    </div>
-                </div>
-                <div class="lane-card tilt-card anim-up">
-                    <div class="lane-icon icon-blue"><i class="fas fa-hard-hat"></i></div>
-                    <div>
-                        <h3 class="color-blue">Tenant</h3>
-                        <p>Your home. See the job. Talk to the trade. That simple.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    /* ══════════════════════════════════
+       CTA CLICK — fly to corner + sweep
+    ══════════════════════════════════ */
+    const yellowSweep = document.getElementById('yellowSweep');
+    const sweepMsg    = document.getElementById('sweepMessage');
+    const sweepDismiss = document.getElementById('sweepDismiss');
 
-    <!-- ═══ How It Works ═══ -->
-    <section class="steps">
-        <div class="container steps-inner">
-            <div class="section-header">
-                <h2 class="section-title">Up and running in minutes</h2>
-            </div>
-            <div class="steps-list">
-                <div class="step-card tilt-card anim-up">
-                    <div class="step-num">01</div>
-                    <div>
-                        <h3>Create your account</h3>
-                        <p>No onboarding call. No sales deck. Start immediately.</p>
-                    </div>
-                </div>
-                <div class="step-card tilt-card anim-up">
-                    <div class="step-num">02</div>
-                    <div>
-                        <h3>Choose your lane</h3>
-                        <p>Trades, Supplier, Property, or Tenant. Verify your ABN. Build trust from job one.</p>
-                    </div>
-                </div>
-                <div class="step-card tilt-card anim-up">
-                    <div class="step-num">03</div>
-                    <div>
-                        <h3>Post your first job</h3>
-                        <p>The platform works from day one. Your reputation compounds from there.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    function triggerSweep(btn) {
+      const rect = btn.getBoundingClientRect();
+      const flyX = (window.innerWidth  - rect.right) + rect.width  * 0.5 - 20;
+      const flyY = -(rect.top) + 18;
 
-    <!-- ═══ Waitlist ═══ -->
-    <section class="waitlist" id="waitlist">
-        <div class="glow-orb glow-orb-center"></div>
-        <div class="float-shape shape-hardhat" style="top:20%;left:10%;animation-delay:0s;animation-duration:15s"></div>
-        <div class="float-shape shape-wrench" style="top:60%;left:88%;animation-delay:2s;animation-duration:12s"></div>
-        <div class="perspective-grid-wrap">
-            <div class="perspective-grid"></div>
-        </div>
+      btnCta.classList.add('flying');
+      btnCta.style.transform = `translate(${flyX}px, ${flyY}px) scale(0.32) rotate(6deg)`;
+      btnCta.style.opacity   = '0.5';
+      document.body.classList.remove('cta-hover');
 
-        <div class="container waitlist-inner">
-            <div class="section-header">
-                <h2 class="section-title">Secure Your Spot</h2>
-                <p class="section-lead">Be first. Join the waitlist.</p>
-                <div id="waitlistSuccess" class="form-message" style="max-width:560px;margin:16px auto 0"></div>
-            </div>
+      setTimeout(() => {
+        yellowSweep.classList.add('active');
+        sweepMsg.classList.add('active');
+      }, 400);
+    }
 
-            <div style="text-align:center;margin-bottom:48px">
-                <button class="btn btn-primary btn-open-form" id="btnWaitlistCta">I'm interested</button>
-            </div>
+    function dismissSweep() {
+      yellowSweep.classList.remove('active');
+      sweepMsg.classList.remove('active');
+      setTimeout(() => {
+        btnCta.style.transform = '';
+        btnCta.style.opacity   = '1';
+        btnCta.classList.remove('flying');
+      }, 250);
+    }
 
-            <div class="waitlist-perks">
-                <h3>Why join the waitlist?</h3>
-                <div class="perks-grid">
-                    <div class="perk-item">
-                        <span class="perk-icon"><i class="fas fa-bell"></i></span>
-                        <p>First to know when the platform opens</p>
-                    </div>
-                    <div class="perk-item">
-                        <span class="perk-icon"><i class="fas fa-tag"></i></span>
-                        <p>Priority access at launch</p>
-                    </div>
-                    <div class="perk-item">
-                        <span class="perk-icon"><i class="fas fa-gift"></i></span>
-                        <p>Launch rewards for early members</p>
-                    </div>
-                    <div class="perk-item">
-                        <span class="perk-icon"><i class="fas fa-handshake"></i></span>
-                        <p>Enterprise partnership offers</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    btnCta.addEventListener('click', () => triggerSweep(btnCta));
+    document.getElementById('navCta').addEventListener('click', () => triggerSweep(btnCta));
+    sweepDismiss.addEventListener('click', dismissSweep);
+  </script>
 
-    <!-- ═══ Founders ═══ -->
-    <section class="founders">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">The people behind Babbitt</h2>
-            </div>
-            <div class="founders-grid">
-                <div class="founder-card tilt-card anim-up">
-                    <div class="founder-avatar">BP</div>
-                    <h3>Bruno Panucci</h3>
-                    <p class="founder-role">Founder</p>
-                </div>
-                <div class="founder-card tilt-card anim-up">
-                    <div class="founder-avatar">KA</div>
-                    <h3>Ky Anh Pham</h3>
-                    <p class="founder-role">Co-Founder</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══ Footer ═══ -->
-    <footer class="footer">
-        <div class="container footer-inner">
-            <div class="footer-left">
-                <span class="footer-brand"><span>B</span>abbitt</span>
-                <span class="footer-by">by Babbitt Pty Ltd</span>
-            </div>
-            <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#lanes">Who it's for</a>
-                <a href="#waitlist">Waitlist</a>
-            </div>
-            <p class="footer-copy">&copy; 2026 Babbitt. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
