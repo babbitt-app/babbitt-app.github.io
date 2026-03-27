@@ -555,40 +555,46 @@
   <!-- Dim overlay — CTA hover -->
   <div class="dim-overlay"></div>
 
-  <!-- Yellow sweep — CTA click -->
-  <div class="yellow-sweep" id="yellowSweep"></div>
-  <div class="sweep-message" id="sweepMessage">
-    <p>Every job. Your name on it.</p>
-    <form class="sweep-form" id="waitlistForm" action="https://formsubmit.co/hello@babbitt.app" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_subject" value="New Waitlist Signup — Babbitt">
-      <input type="hidden" name="_autoresponse" value="Thank you for your interest in Babbitt! We'll be in touch soon.">
-      <div class="form-row">
-        <input class="sweep-input" type="text" name="firstName" placeholder="First Name" required>
-        <input class="sweep-input" type="text" name="lastName" placeholder="Last Name" required>
-      </div>
-      <input class="sweep-input" type="email" name="email" placeholder="Email" required>
-      <input class="sweep-input" type="text" name="company" placeholder="Your Company Name (if any)">
-      <select name="userType" required>
-        <option value="">Your Profession</option>
-        <option value="trades">Trades &amp; Specialists</option>
-        <option value="property_manager">Property Manager</option>
-        <option value="property_owner">Property Owner</option>
-        <option value="strata">Strata</option>
-        <option value="supplier">Suppliers &amp; Enterprise Contractors</option>
-        <option value="tenant">Tenant</option>
-        <option value="other">Other</option>
-      </select>
-      <label class="checkbox-label">
-        <input type="checkbox" name="terms" required>
-        <span>I agree to the terms and conditions</span>
-      </label>
-      <button type="submit" class="sweep-submit">Secure My Spot</button>
-      <span class="sweep-terms">No spam. Early access only — April 2026 beta.</span>
-    </form>
-    <button class="sweep-dismiss" id="sweepDismiss">← Back</button>
-  </div>
+    <!-- Yellow sweep — form overlay -->
+    <div class="yellow-sweep" id="yellowSweep"></div>
+    <div class="sweep-message" id="sweepMessage">
+        <div class="sweep-content">
+            <p class="sweep-title">Every job. Your name on it.</p>
+            <form class="sweep-form" id="waitlistForm" action="https://formsubmit.co/8983ca65ed03cc64c5f19eccfe3c111b" method="POST">
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_format" value="plain">
+                <input type="hidden" name="_url" value="https://babbitt-app.github.io">
+                <input type="hidden" name="_next" value="https://babbitt-app.github.io/#user_waitlist">
+                <input type="hidden" name="_subject" value="New Waitlist Signup - Babbitt">
+                <input type="hidden" name="_autoresponse" value="Thank you for your interest in Babbitt! We'll be in touch soon.">
+                <div class="form-row">
+                    <input type="text" name="firstName" placeholder="First Name" required>
+                    <input type="text" name="lastName" placeholder="Last Name" required>
+                </div>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="company" placeholder="Your Company Name (if any)">
+                <select name="userType" aria-placeholder="Your Profession" required>
+                    <option value ="">Your Profession</option>
+                    <option value="trades">Trades & Specialists</option>
+                    <option value="property_manager">Property Manager</option>
+                    <option value="property_owner">Property Owner</option>
+                    <option value="strata">Strata</option>
+                    <option value="supplier">Suppliers & Enterprise Contractors</option>
+                    <option value="tenant">Tenant</option>
+                    <option value="other">Other</option>
+                </select>
+                <textarea name="Your thoughts" rows="3" maxlength="300" placeholder="Anything on your mind about Babbitt? Let us know"></textarea>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="terms" required>
+                    <span>I agree to the terms and conditions</span>
+                </label>
+                <div id="formMessage" class="form-message"></div>
+                <button type="submit" class="btn btn-submit-sweep" id="submitBtn">Secure My Spot</button>
+            </form>
+            <p class="sweep-hint">Click outside to close</p>
+        </div>
+    </div>
 
   <!-- Atmospheric gradient orbs -->
   <div class="orb-container">
